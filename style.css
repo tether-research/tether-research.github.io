@@ -1,0 +1,122 @@
+
+:root {
+    --highlight: #b77dff;
+}
+
+body, h1, h2, h3, ul, li, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Computer Modern Serif', serif;
+    background-color: #FFFFFF;
+    color: #000000;
+    margin: 0 auto;
+    max-width: 960px;
+    padding: 20px;
+}
+
+section {
+    margin: 20px 0px;
+}
+
+header {
+    margin: 20px 0px 40px 0px;
+}
+
+h1 {
+    margin: 0px 0px 10px 0px;
+}
+
+.name {
+    display: block;
+    font-size: 3rem;
+    color: var(--highlight);
+}
+
+.title {
+    display: block;
+    font-size: 1.5rem;
+}
+
+.authors {
+    font-style: italic;
+}
+
+.publication {
+    font-weight: bold;
+    color: var(--highlight);
+}
+
+sup {
+    color: var(--highlight);
+}
+
+.buttons {
+    margin: 20px 0px 20px 0px;
+}
+
+.button {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--highlight);
+    color: #ffffff;
+    border: 2px solid var(--highlight);
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: #ffffff;
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+h2 {
+    font-size: 1.25em;
+    color: var(--highlight);
+    margin: 10px 0px 10px 0px;
+}
+
+p {
+    margin: 5px 0px 5px 0px;
+}
+
+figure video {
+    margin: 0px 0px 10px 0px;
+}
+
+figure figcaption {
+    text-align: center;
+    font-style: italic;
+}
+
+.highlight {
+    color: var(--highlight);
+}
+
+a {
+    color: #0000ff;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    margin: 0px 0px 0px 30px;
+ }
+
+img, video {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+    box-sizing: border-box;
+}
