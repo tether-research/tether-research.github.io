@@ -155,5 +155,8 @@ img, video {
 }
 
 hr {
+    background-color: var(--highlight);
+    border: none;
+    height: 2px;
     margin: 20px 0px 20px 0px;
 }
