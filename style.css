@@ -151,3 +151,6 @@ img, video {
   gap: 0.25rem; /* spacing between videos */
 }
 
+hr {
+    margin: 20px 0px 20px 0px;
+}

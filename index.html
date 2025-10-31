@@ -48,6 +48,8 @@
 
     <section id="abstract">
         <h2>Abstract</h2>
+        <p style="font-style: italic;"><strong>TLDR.</strong> Tether performs autonomous multi-task play in the real world with a correspondence-driven trajectory warping policy and vision-language models. Our policy design outperforms alternative methods on a variety of tasks in the low-data regime, and Tether's stream of play data consistently improves downstream policy performance to high success rates.</p>
+        <hr>
         <p>The ability to conduct and learn from self-directed interaction and experience is a central challenge in robotics, offering a scalable alternative to labor-intensive human demonstrations. However, realizing such "play" requires (1) a policy robust to diverse, potentially out-of-distribution environment states, and (2) a procedure that continuously produces useful, task-directed robot experience. To address these challenges, we introduce Tether, a method for autonomous play with two key contributions. First, we design a <strong>novel non-parametric policy</strong> that leverages strong visual priors for extreme generalization: given two-view images, it identifies semantic correspondences to warp demonstration trajectories into new scenes. We show that this design is robust to significant spatial and semantic variations of the environment, such as dramatic positional differences and unseen objects. We then deploy this policy for <strong>autonomous multi-task play in the real world</strong> via a continuous cycle of task selection, execution, evaluation, and improvement, guided by the visual understanding capabilities of vision-language models. This procedure generates diverse, high-quality datasets with minimal human intervention. In a household-like multi-object setup, our method is among the first to perform many hours of autonomous real-world play, producing a stream of data that consistently improves downstream policy performance over time. Ultimately, Tether yields over 1000 expert-level trajectories and trains policies competitive with those learned from human-collected demonstrations.</p>
     </section>
 
@@ -57,7 +59,7 @@
             <video autoplay loop muted playsinline controls>
                 <source src="assets/timelapse.mp4" type="video/mp4">
             </video>
-            <figcaption>Timelapse of a subsection of our 26-hour long autonomous play experiment. Video is 100x speed.</figcaption>
+            <figcaption>Timelapse of a subsection of our 26-hour long autonomous play experiment. Video plays at 100x speed.</figcaption>
         </figure>
     </section>
 
