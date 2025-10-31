@@ -57,7 +57,7 @@
             <video autoplay loop muted playsinline controls>
                 <source src="assets/timelapse.mp4" type="video/mp4">
             </video>
-            <figcaption>Timelapse of a subsection of our 26-hour long autonomous play experiment. Video is sped up by 100x.</figcaption>
+            <figcaption>Timelapse of a subsection of our 26-hour long autonomous play experiment. Video is 100x speed.</figcaption>
         </figure>
     </section>
 
@@ -108,16 +108,14 @@
 
     <section>
         <h2>Method</h2>
-        <h3>Correspondence-Driven Trajectory Warping</h3>
         <figure>
             <img src="assets/method_inference.jpg" style="width: 80%;">
-            <figcaption><strong>Policy Inference.</strong> Our non-parametric policy is given a few demos, and at inference time, it computes correspondences and produces a warped trajectory action plan.</figcaption>
+            <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Our non-parametric policy is given a few demos, and at inference time, it computes correspondences and produces a warped trajectory action plan.</figcaption>
         </figure>
 
-        <h3>Autonomous Multi-Task Play with Vision-Language Models</h3>
         <figure>
             <img src="assets/method_play.jpg" style="width: 80%;">
-            <figcaption><strong>Autonomous Play.</strong> Our iterative procedure continuously runs the Tether policy for multiple tasks, using a VLM for plan generation and success detection.</figcaption>
+            <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our iterative procedure continuously runs the Tether policy for multiple tasks, using a VLM for plan generation and success detection.</figcaption>
         </figure>
     </section>
 
