@@ -58,7 +58,7 @@
 
     <section id="abstract">
         <h2>Abstract</h2>
-        <p style="font-style: italic;"><strong>TLDR.</strong> Tether performs autonomous multi-task play in the real world with a correspondence-driven trajectory warping policy and vision-language models. Our policy design outperforms alternative methods on a variety of tasks in the low-data regime, and Tether's stream of play data consistently improves downstream policy performance to high success rates.</p>
+        <p style="font-style: italic;"><strong>TLDR.</strong> Tether performs autonomous multi-task play in the real world with a correspondence-driven trajectory warping policy and vision-language models. Our non-parametric policy outperforms alternative methods in the low-data regime, and the stream of play data consistently improves downstream policies over time, ultimately reaching near-perfect success rates.</p>
         <hr>
         <p>The ability to conduct and learn from self-directed interaction and experience is a central challenge in robotics, offering a scalable alternative to labor-intensive human demonstrations. However, realizing such "play" requires (1) a policy robust to diverse, potentially out-of-distribution environment states, and (2) a procedure that continuously produces useful, task-directed robot experience. To address these challenges, we introduce Tether, a method for autonomous play with two key contributions. First, we design a <strong>novel non-parametric policy</strong> that leverages strong visual priors for extreme generalization: given two-view images, it identifies semantic correspondences to warp demonstration trajectories into new scenes. We show that this design is robust to significant spatial and semantic variations of the environment, such as dramatic positional differences and unseen objects. We then deploy this policy for <strong>autonomous multi-task play in the real world</strong> via a continuous cycle of task selection, execution, evaluation, and improvement, guided by the visual understanding capabilities of vision-language models. This procedure generates diverse, high-quality datasets with minimal human intervention. In a household-like multi-object setup, our method is among the first to perform many hours of autonomous real-world play, producing a stream of data that consistently improves downstream policy performance over time. Ultimately, Tether yields over 1000 expert-level trajectories and trains policies competitive with those learned from human-collected demonstrations.</p>
     </section>
@@ -122,12 +122,12 @@
         <h2>Method</h2>
         <figure>
             <img src="assets/method_inference.jpg" style="width: 80%;">
-            <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Our non-parametric policy is given a few demos, and at inference time, it computes correspondences and produces a warped trajectory action plan.</figcaption>
+            <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Given a few demos, our non-parametric policy computes visual correspondences and produces a warped trajectory action plan.</figcaption>
         </figure>
 
         <figure>
             <img src="assets/method_play.jpg" style="width: 80%;">
-            <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our iterative procedure continuously runs the Tether policy for multiple tasks, using a VLM for plan generation and success detection.</figcaption>
+            <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our play procedure continuously runs the Tether policy, cycling across different tasks and querying a VLM for plan generation and success detection.</figcaption>
         </figure>
     </section>
 
@@ -136,17 +136,17 @@
 
         <figure>
             <img src="assets/experiment_policy.svg" style="width: 80%;">
-            <figcaption><strong>Main Policy Comparison.</strong> Our Tether policy surpasses baselines across all 12 tasks and performs remarkly well with only 1, 5, or 10 demonstrations.</figcaption>
+            <figcaption><strong>Main Policy Comparison.</strong> Our Tether policy surpasses imitation learning baselines across all 12 tasks and performs remarkly well with only 1, 5, or 10 demonstrations.</figcaption>
         </figure>
 
         <figure>
             <img src="assets/experiment_play.jpg" style="width: 80%;">
-            <figcaption><strong>Autonomous Play Statistics.</strong> In around 26 hours of play, Tether produces over 1000 trajectories across 6 tasks and expands the diversity of object positions.</figcaption>
+            <figcaption><strong>Autonomous Play Statistics.</strong> In around 26 hours of play, Tether produces over 1000 trajectories across 6 tasks and significantly expands the diversity of object positions.</figcaption>
         </figure>
 
         <figure>
             <img src="assets/experiment_play_policy.svg" style="width: 80%;">
-            <figcaption><strong>Downstream Policy Learning Results.</strong> The stream of data generated by autonomous play consistently improves policy performance over time, reaching high success rates on all 6 play tasks.</figcaption>
+            <figcaption><strong>Downstream Policy Learning Results.</strong> The stream of data generated by autonomous play consistently improves downstream policy performance over time, eventually achieving high success rates on all 6 play tasks.</figcaption>
         </figure>
     </section>
 
