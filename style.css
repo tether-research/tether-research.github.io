@@ -1,6 +1,7 @@
 
 :root {
-    --highlight: #b77dff;
+    --black: #000000;
+    --highlight: #f279a6;
 }
 
 body, h1, h2, h3, ul, li, p {
@@ -29,6 +30,24 @@ h1 {
     margin: 0px 0px 10px 0px;
 }
 
+p {
+    font-size: 1.1em;
+}
+
+figcaption {
+    font-size: 1.1em;
+}
+
+a {
+    text-decoration: none;
+    color: var(--black);
+    white-space: nowrap;
+}
+
+a:hover {
+    color: var(--highlight);
+}
+
 .name {
     display: block;
     font-size: 3rem;
@@ -44,6 +63,17 @@ h1 {
     font-style: italic;
 }
 
+.affiliations {
+    margin: 15px 0px 15px 0px;
+}
+
+.affiliations img {
+    display: inline-block;
+    vertical-align: middle;
+    height: 2rem;
+    width: 2rem;
+}
+
 .publication {
     font-weight: bold;
     color: var(--highlight);
@@ -54,7 +84,7 @@ sup {
 }
 
 .buttons {
-    margin: 20px 0px 20px 0px;
+    margin: 15px 0px 0px 0px;
 }
 
 .button {
@@ -75,8 +105,14 @@ sup {
 }
 
 h2 {
-    font-size: 1.25em;
+    font-size: 1.5em;
     color: var(--highlight);
+    margin: 10px 0px 10px 0px;
+}
+
+h3 {
+    font-size: 1.25em;
+    color: var(--black);
     margin: 10px 0px 10px 0px;
 }
 
@@ -84,27 +120,14 @@ p {
     margin: 5px 0px 5px 0px;
 }
 
-figure video {
-    margin: 0px 0px 10px 0px;
+figure {
+    margin: 20px 0px 30px 0px;
 }
 
 figure figcaption {
     text-align: center;
-    font-style: italic;
-}
-
-.highlight {
-    color: var(--highlight);
-}
-
-a {
-    color: #0000ff;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-a:hover {
-    text-decoration: underline;
+    /* font-style: italic; */
+    margin: 20px 30px 0px 30px;
 }
 
 ul {
@@ -119,4 +142,12 @@ img, video {
     object-fit: cover;
     object-position: 50% 20%;
     box-sizing: border-box;
+    border-radius: 5px;;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  gap: 0.25rem; /* spacing between videos */
+}
+
