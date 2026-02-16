@@ -78,8 +78,9 @@ a:hover {
 }
 
 .publication {
-    font-weight: bold;
     color: var(--highlight);
+    margin-left: 10px;
+    font-size: 1.1em;
 }
 
 sup {
@@ -129,7 +130,7 @@ figure {
 
 figure figcaption {
     text-align: center;
-    margin: 20px 30px 0px 30px;
+    margin: 20px 30px 50px 30px;
 }
 
 ul {
@@ -153,13 +154,6 @@ img, video {
   gap: 0.25rem;
 }
 
-hr {
-    background-color: var(--highlight);
-    border: none;
-    height: 2px;
-    margin: 20px 0px 20px 0px;
-}
-
 code {
     display: block;
     white-space: pre-wrap;
@@ -167,4 +161,49 @@ code {
     font-family: "CMU Typewriter", monospace;
     padding: 0px 30px 0px 30px;
     background-color: #fcf5eb;
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.abstract-content {
+    display: none;
+    margin-top: 10px;
+}
+
+.toggle-checkbox:checked ~ .abstract-content {
+    display: block;
+}
+
+.toggle-label {
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--black);
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.toggle-label:hover {
+    color: var(--highlight);
+}
+
+.toggle-label::before {
+    content: '▶';
+    font-size: 0.6em;
+    margin-right: 6px;
+    display: inline-block;
+}
+
+.toggle-checkbox:checked + .toggle-label::before {
+    transform: rotate(90deg);
+}
+
+.toggle-label::after {
+    content: "See More";
+}
+
+.toggle-checkbox:checked + .toggle-label::after {
+    content: "See Less";
 }
