@@ -44,6 +44,10 @@ a {
     white-space: nowrap;
 }
 
+body.ready a {
+    transition: color 0.2s ease-in-out;
+}
+
 a:hover {
     color: var(--highlight);
 }
@@ -102,6 +106,10 @@ sup {
     font-weight: bold;
 }
 
+body.ready .button {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
 .button:hover {
     background-color: transparent;
     color: var(--highlight);
@@ -141,11 +149,19 @@ img, video {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
+    width: 95%;
     object-fit: cover;
     object-position: 50% 20%;
     box-sizing: border-box;
-    border-radius: 5px;;
+    border-radius: 5px;
+}
+
+body.ready img, body.ready video {
+    transition: transform 0.3s ease-in-out;
+}
+
+img:hover, video:hover {
+    transform: scale(1.05);
 }
 
 .grid {
@@ -168,42 +184,38 @@ code {
 }
 
 .abstract-content {
-    display: none;
-    margin-top: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
 }
 
 .toggle-checkbox:checked ~ .abstract-content {
-    display: block;
+    max-height: 600px;
+    opacity: 1;
 }
 
 .toggle-label {
-    font-weight: bold;
     cursor: pointer;
-    color: var(--black);
     user-select: none;
-    display: inline-flex;
-    align-items: center;
+    font-size: 1.1em;
+    font-style: italic;
+    color: gray;
+    transition: border-color 0.2s ease;
+}
+
+body.ready .toggle-label {
+    transition: color 0.2s ease-in-out;
 }
 
 .toggle-label:hover {
-    color: var(--highlight);
-}
-
-.toggle-label::before {
-    content: '▶';
-    font-size: 0.6em;
-    margin-right: 6px;
-    display: inline-block;
-}
-
-.toggle-checkbox:checked + .toggle-label::before {
-    transform: rotate(90deg);
+    color: var(--highlight)
 }
 
 .toggle-label::after {
-    content: "See More";
+    content: "Read more...";
 }
 
 .toggle-checkbox:checked + .toggle-label::after {
-    content: "See Less";
+    content: "Read less";
 }
