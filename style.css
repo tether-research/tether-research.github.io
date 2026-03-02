@@ -88,6 +88,16 @@ a:hover {
     font-size: 1.1em;
 }
 
+.publication::after {
+    content: " 🎉";
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.publication:hover::after {
+    opacity: 1;
+}
+
 sup {
     color: var(--highlight);
 }
@@ -158,7 +168,7 @@ img, video {
 }
 
 body.ready img, body.ready video {
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
 img:hover, video:hover {
@@ -272,7 +282,7 @@ code {
 .abstract-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease, opacity 0.3s ease;
+    transition: max-height 0.2s ease, opacity 0.2s ease;
     opacity: 0;
 }
 
