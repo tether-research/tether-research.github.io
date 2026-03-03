@@ -80,6 +80,14 @@ a:hover {
     vertical-align: middle;
     height: 2rem;
     width: 2rem;
+    transform: none !important;
+}
+
+.affiliations picture {
+    display: inline-block;
+    vertical-align: middle;
+    height: 2rem;
+    width: 2rem;
 }
 
 .publication {
@@ -155,6 +163,17 @@ figure figcaption {
 ul {
     margin: 0px 0px 0px 30px;
  }
+
+figure picture {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+}
+
+figure picture img {
+    width: 100%;
+}
 
 img, video {
     display: block;
@@ -294,7 +313,7 @@ code {
 .toggle-label {
     cursor: pointer;
     user-select: none;
-    font-size: 1.1em;
+    font-size: 1.0em;
     font-style: italic;
     color: gray;
     transition: border-color 0.2s ease;
