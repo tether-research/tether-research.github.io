@@ -291,7 +291,7 @@ code {
     word-break: break-word;
     font-family: "CMU Typewriter", monospace;
     padding: 0px 30px 0px 30px;
-    background-color: #fcf5eb;
+    background-color: rgba(242, 121, 166, 0.05);
 }
 
 .toggle-checkbox {

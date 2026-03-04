@@ -18,20 +18,19 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js" async></script>
     <script>
         window.addEventListener('load', () => {
-            // HLS streaming for timelapse video
-            const timelapse = document.getElementById('timelapse');
-            const hlsSrc = 'assets/timelapse_hls/stream.m3u8';
-            if (timelapse) {
-                if (timelapse.canPlayType('application/vnd.apple.mpegurl')) {
-                    // Safari: native HLS support
-                    timelapse.src = hlsSrc;
+            // HLS streaming for large videos
+            [['trailer', 'assets/trailer_hls/stream.m3u8'],
+             ['timelapse', 'assets/timelapse_hls/stream.m3u8']].forEach(([id, src]) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (el.canPlayType('application/vnd.apple.mpegurl')) {
+                    el.src = src;
                 } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                     const hls = new Hls();
-                    hls.loadSource(hlsSrc);
-                    hls.attachMedia(timelapse);
+                    hls.loadSource(src);
+                    hls.attachMedia(el);
                 }
-                // else: falls back to <source src="timelapse.mp4">
-            }
+            });
 
             document.body.classList.add('ready');
 
@@ -74,10 +73,9 @@
     <nav class="toc">
         <span class="toc-heading">Contents</span>
         <a href="#abstract" target="_self">Abstract</a>
-        <a href="#play" target="_self">Real-World Play</a>
-        <a href="#imitation" target="_self">Robust Imitation</a>
         <a href="#method" target="_self">Method</a>
-        <a href="#results" target="_self">Results</a>
+        <a href="#imitation" target="_self">Robust Imitation</a>
+        <a href="#play" target="_self">Autonomous Play</a>
     </nav>
 
     <header>
@@ -115,12 +113,18 @@
         </div>
 
         <div class="buttons">
-            <a class="button" href="">Paper</a>
+            <a class="button" href="https://arxiv.org/abs/2603.03278">Paper</a>
             <a class="button" href="https://github.com/tether-research/tether">Code</a>
             <a class="button" href="">Thread</a>
             <span class="publication">ICLR 2026</span>
         </div>
     </header>
+
+    <figure>
+        <video id="trailer" loop muted playsinline preload="metadata">
+            <source src="assets/trailer.mp4" type="video/mp4">
+        </video>
+    </figure>
 
     <section id="abstract">
         <h2>Abstract</h2>
@@ -132,18 +136,25 @@
     </div>
     </section>
 
-    <section id="play">
-        <h2>Real-World Play</h2>
+    <section id="method">
+        <h2>Method</h2>
         <figure>
-            <video id="timelapse" loop muted playsinline controls>
-                <source src="assets/timelapse.mp4" type="video/mp4">
+            <video loop muted playsinline preload="metadata">
+                <source src="assets/method_inference.mp4" type="video/mp4">
             </video>
-            <figcaption><strong>Timelapse.</strong> Tether performs over 24 hours of autonomous real-world play with minimal human intervention. We record a subsection of its run, played at 100x speed.</figcaption>
+            <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Given a few demos, our policy computes keypoint correspondences and produces a warped trajectory action plan, which is executed open-loop.</figcaption>
+        </figure>
+        <figure>
+            <video loop muted playsinline preload="metadata">
+                <source src="assets/method_play.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our play procedure continuously runs the Tether policy, cycling across different tasks and querying a VLM for plan generation and success detection.</figcaption>
         </figure>
     </section>
 
     <section id="imitation">
         <h2>Robust Imitation</h2>
+
         <figure>
             <div class="grid">
                 <div class="grid-cell"><video loop muted playsinline preload="metadata">
@@ -185,30 +196,22 @@
             </div>
             <figcaption><strong>Tasks.</strong> Our Tether policy is robust to spatial and semantic environment variation, as evaluated on in-distribution (first row) and out-of-distribution (second row) objects, as well as challenging manipulation skills (third row).</figcaption>
         </figure>
-    </section>
-
-    <section id="method">
-        <h2>Method</h2>
-        <figure>
-            <video loop muted playsinline preload="metadata">
-                <source src="assets/method_inference.mp4" type="video/mp4">
-            </video>
-            <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Given a few demos, our policy computes keypoint correspondences and produces a warped trajectory action plan, which is executed open-loop.</figcaption>
-        </figure>
-        <figure>
-            <video loop muted playsinline preload="metadata">
-                <source src="assets/method_play.mp4" type="video/mp4">
-            </video>
-            <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our play procedure continuously runs the Tether policy, cycling across different tasks and querying a VLM for plan generation and success detection.</figcaption>
-        </figure>
-    </section>
-
-    <section id="results">
-        <h2>Results</h2>
 
         <figure>
             <img src="assets/experiment_policy.svg" loading="lazy" width="938" height="574">
             <figcaption><strong>Main Policy Comparison.</strong> Our Tether policy surpasses imitation learning baselines in the low data regime.</figcaption>
+        </figure>
+
+    </section>
+
+    <section id="play">
+        <h2>Autonomous Play</h2>
+
+        <figure>
+            <video id="timelapse" loop muted playsinline controls>
+                <source src="assets/timelapse.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Timelapse.</strong> Tether performs over 24 hours of autonomous real-world play with minimal human intervention. We record a subsection of its run, played at 100x speed.</figcaption>
         </figure>
 
         <figure>
@@ -325,9 +328,13 @@
         <h2>Citation</h2>
         <code>
 @misc{liang2026tether,
-    title   = {Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping},
-    author  = {William Liang and Sam Wang and Hungju Wang and Osbert Bastani and Jason Ma and Dinesh Jayaraman},
-    year    = {2026},
+      title={Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping}, 
+      author={William Liang and Sam Wang and Hung-Ju Wang and Osbert Bastani and Yecheng Jason Ma and Dinesh Jayaraman},
+      year={2026},
+      eprint={2603.03278},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2603.03278}, 
 }
         </code>
     </section>
