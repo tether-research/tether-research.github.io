@@ -68,14 +68,21 @@
             window.addEventListener('scroll', updateActive, { passive: true });
             updateActive();
 
-            // Lazy autoplay: play videos when visible, pause when off-screen
+            // Lazy load + autoplay: load source and play when visible, pause when off-screen
             const videos = document.querySelectorAll('video');
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    const v = entry.target;
                     if (entry.isIntersecting) {
-                        entry.target.play();
+                        const source = v.querySelector('source[data-src]');
+                        if (source) {
+                            source.src = source.dataset.src;
+                            source.removeAttribute('data-src');
+                            v.load();
+                        }
+                        v.play();
                     } else {
-                        entry.target.pause();
+                        v.pause();
                     }
                 });
             }, { threshold: 0.25 });
@@ -154,14 +161,14 @@
     <section id="method">
         <h2>Method</h2>
         <figure>
-            <video loop muted playsinline preload="metadata">
-                <source src="assets/method_inference.mp4" type="video/mp4">
+            <video loop muted playsinline preload="none">
+                <source data-src="assets/method_inference.mp4" type="video/mp4">
             </video>
             <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Given a few demos, our policy computes keypoint correspondences and produces a warped trajectory action plan, which is executed open-loop.</figcaption>
         </figure>
         <figure>
-            <video loop muted playsinline preload="metadata">
-                <source src="assets/method_play.mp4" type="video/mp4">
+            <video loop muted playsinline preload="none">
+                <source data-src="assets/method_play.mp4" type="video/mp4">
             </video>
             <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our play procedure continuously runs the Tether policy, cycling across different tasks and querying a VLM for plan generation and success detection.</figcaption>
         </figure>
@@ -172,41 +179,41 @@
 
         <figure>
             <div class="grid">
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/pineapple_shelf_table.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_shelf_table.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/pineapple_table_bowl.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_table_bowl.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/bowl_table_shelf.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/bowl_table_shelf.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/bowl_shelf_table.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/bowl_shelf_table.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/apple_bowl.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/apple_bowl.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/strawberry_bowl.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/strawberry_bowl.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/pineapple_basket.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_basket.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/pineapple_cup.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_cup.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/wipe_whiteboard.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/wipe_whiteboard.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/open_cabinet.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/open_cabinet.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/hang_tape.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/hang_tape.mp4" type="video/mp4">
                 </video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="metadata">
-                    <source src="assets/insert_coffee.mp4" type="video/mp4">
+                <div class="grid-cell"><video loop muted playsinline preload="none">
+                    <source data-src="assets/insert_coffee.mp4" type="video/mp4">
                 </video></div>
             </div>
             <figcaption><strong>Tasks.</strong> Our Tether policy is robust to spatial and semantic environment variation, as evaluated on in-distribution (first row) and out-of-distribution (second row) objects, as well as challenging manipulation skills (third row).</figcaption>
@@ -236,94 +243,94 @@
 
         <figure>
             <div class="grid grid-9">
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_11_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pineapple_table_bowl_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_2_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_1_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_13_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_2_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_9_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_3_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_8_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_9_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_12_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_10_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_4_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_5_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_10_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_12_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_6_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_1_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_9_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_6_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_5_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_3_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_1_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_10_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_10_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pineapple_bowl_table_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_5_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_1_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_7_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_6_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bowl_shelf_table_demo_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_5_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pineapple_shelf_table_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_8_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_1_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pineapple_bowl_table_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_10_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_8_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_12_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_3_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_14_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_2_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_11_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_7_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_4_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_2_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_11_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_7_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_5_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_7_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_7_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_3_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_4_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pineapple_table_bowl_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_2_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_8_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_10_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_2_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_6_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_8_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_7_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_9_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pst_demo_11_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pineapple_table_shelf_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_5_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pts_demo_11_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_1_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_4_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_6_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_3_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_9_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_12_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bowl_table_shelf_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_4_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/ptb_demo_12_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_8_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/pbt_demo_6_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bowl_table_shelf_demo_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_3_left.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bst_demo_4_right.mp4" type="video/mp4"></video></div>
-                <div class="grid-cell"><video loop muted playsinline preload="none"><source src="assets/trajectories/bts_demo_9_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_11_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pineapple_table_bowl_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_2_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_1_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_13_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_2_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_9_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_3_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_8_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_9_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_12_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_10_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_4_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_5_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_10_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_12_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_6_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_1_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_9_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_6_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_5_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_3_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_1_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_10_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_10_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pineapple_bowl_table_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_5_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_1_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_7_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_6_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bowl_shelf_table_demo_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_5_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pineapple_shelf_table_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_8_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_1_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pineapple_bowl_table_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_10_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_8_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_12_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_3_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_14_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_2_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_11_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_7_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_4_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_2_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_11_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_7_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_5_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_7_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_7_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_3_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_4_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pineapple_table_bowl_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_2_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_8_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_10_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_2_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_6_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_8_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_7_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_9_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pst_demo_11_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pineapple_table_shelf_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_5_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pts_demo_11_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_1_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_4_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_6_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_3_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_9_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_12_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bowl_table_shelf_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_4_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/ptb_demo_12_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_8_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/pbt_demo_6_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bowl_table_shelf_demo_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_3_left.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bst_demo_4_right.mp4" type="video/mp4"></video></div>
+                <div class="grid-cell"><video loop muted playsinline preload="none"><source data-src="assets/trajectories/bts_demo_9_left.mp4" type="video/mp4"></video></div>
             </div>
             <figcaption><strong>Generated Trajectories.</strong> Tether produces expert-level trajectories with randomization and resets induced by play.</figcaption>
         </figure>
 
         <figure>
-            <video loop muted playsinline preload="metadata" controls>
-                <source src="assets/correction.mp4" type="video/mp4">
+            <video loop muted playsinline preload="none" controls>
+                <source data-src="assets/correction.mp4" type="video/mp4">
             </video>
             <figcaption><strong>Spontaneous Correction.</strong> While a flipped bowl is nearly impossible to fix with one arm and requires intervention, Tether corrects this case by chance, highlighting that at scale, coincidences may result in unexpected behaviors.</figcaption>
         </figure>
