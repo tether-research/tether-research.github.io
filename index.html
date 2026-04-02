@@ -21,6 +21,9 @@
 
     <link rel="preload" href="font/cmunrm.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="font/cmunbx.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="font/cmun.css">
 
@@ -49,11 +52,19 @@
         window.addEventListener('load', () => {
             document.body.classList.add('ready');
 
+            const toc = document.querySelector('.toc');
             const tocLinks = document.querySelectorAll('.toc a');
             const sections = document.querySelectorAll('section[id]');
-            const offset = 150;
+            const offset = 40;
+            const tocMinTop = 24;
+            const trailer = document.getElementById('trailer');
+            const tocInitialTop = trailer ? trailer.getBoundingClientRect().top + window.scrollY + tocMinTop : 320;
 
-            function updateActive() {
+            function updateToc() {
+                const scrollY = window.scrollY;
+                const top = Math.max(tocMinTop, tocInitialTop - scrollY);
+                toc.style.top = top + 'px';
+
                 let current = sections[0];
                 for (const section of sections) {
                     if (section.getBoundingClientRect().top <= offset) {
@@ -65,8 +76,8 @@
                 if (active) active.classList.add('active');
             }
 
-            window.addEventListener('scroll', updateActive, { passive: true });
-            updateActive();
+            window.addEventListener('scroll', updateToc, { passive: true });
+            updateToc();
 
             // Lazy load + autoplay: load source and play when visible, pause when off-screen
             const videos = document.querySelectorAll('video');
@@ -93,7 +104,6 @@
 
 <body>
     <nav class="toc">
-        <span class="toc-heading">Contents</span>
         <a href="#abstract" target="_self">Abstract</a>
         <a href="#method" target="_self">Method</a>
         <a href="#imitation" target="_self">Robust Imitation</a>
@@ -107,11 +117,11 @@
         </h1>
 
         <p class="authors">
-            <a href="https://willjhliang.github.io">William Liang</a><sup>1,2</sup>,
-            <a href="https://www.linkedin.com/in/sam-wang-penn/">Sam Wang</a><sup>1</sup>,
-            <a href="https://johnny-wang16.github.io/">Hung-Ju Wang</a><sup>1,3</sup>,
-            <a href="https://obastani.github.io/">Osbert Bastani</a><sup>1</sup>,
-            <a href="https://jasonma2016.github.io/">Yecheng Jason Ma</a><sup>1,3†</sup>,
+            <a href="https://willjhliang.github.io">William Liang</a><sup>1,2</sup>
+            <a href="https://www.linkedin.com/in/sam-wang-penn/">Sam Wang</a><sup>1</sup>
+            <a href="https://johnny-wang16.github.io/">Hung-Ju Wang</a><sup>1,3</sup>
+            <a href="https://obastani.github.io/">Osbert Bastani</a><sup>1</sup>
+            <a href="https://jasonma2016.github.io/">Yecheng Jason Ma</a><sup>1,3†</sup>
             <a href="https://www.seas.upenn.edu/~dineshj/">Dinesh Jayaraman</a><sup>1†</sup>
         </p>
 
@@ -135,9 +145,9 @@
         </div>
 
         <div class="buttons">
-            <a class="button" href="https://arxiv.org/abs/2603.03278">Paper</a>
-            <a class="button" href="https://github.com/tether-research/tether">Code</a>
-            <a class="button" href="https://x.com/willjhliang/status/2029238456766087386">Thread</a>
+            <a class="button" href="https://arxiv.org/abs/2603.03278"><svg width="12" height="16" viewBox="0 0 17.732 24.269"><path d="M573.549,280.916l2.266,2.738,6.674-7.84c.353-.47.52-.717.353-1.117a1.218,1.218,0,0,0-1.061-.748h0a.953.953,0,0,0-.712.262Z" transform="translate(-566.984 -271.548)" fill="currentColor" opacity="0.5"/><path d="M579.525,282.225l-10.606-10.174a1.413,1.413,0,0,0-.834-.5,1.09,1.09,0,0,0-1.027.66c-.167.4-.047.681.319,1.206l8.44,10.242h0l-6.282,7.716a1.336,1.336,0,0,0-.323,1.3,1.114,1.114,0,0,0,1.04.69A.992.992,0,0,0,571,293l8.519-7.92A1.924,1.924,0,0,0,579.525,282.225Z" transform="translate(-566.984 -271.548)" fill="currentColor"/><path d="M584.32,293.912l-8.525-10.275,0,0L573.53,280.9l-1.389,1.254a2.063,2.063,0,0,0,0,2.965l10.812,10.419a.925.925,0,0,0,.742.282,1.039,1.039,0,0,0,.953-.667A1.261,1.261,0,0,0,584.32,293.912Z" transform="translate(-566.984 -271.548)" fill="currentColor" opacity="0.5"/></svg> Paper</a>
+            <a class="button" href="https://github.com/tether-research/tether"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> Code</a>
+            <a class="button" href="https://x.com/willjhliang/status/2029238456766087386"><svg width="16" height="16" viewBox="0 0 248 204" fill="currentColor"><path d="M221.95 51.29c.15 2.17.15 4.34.15 6.53 0 66.73-50.8 143.69-143.69 143.69v-.04c-27.44.04-54.31-7.82-77.41-22.64 3.99.48 8 .72 12.02.73 22.74.02 44.83-7.61 62.72-21.66-21.61-.41-40.56-14.5-47.18-35.07 7.57 1.46 15.37 1.16 22.8-.87-23.56-4.76-40.51-25.46-40.51-49.5v-.64c7.02 3.91 14.88 6.08 22.92 6.32C11.58 63.31 4.74 33.79 18.14 10.71c25.64 31.55 63.47 50.73 104.08 52.76-4.07-17.54 1.49-35.92 14.61-48.25 20.34-19.12 52.33-18.14 71.45 2.19 11.31-2.23 22.15-6.38 32.07-12.26-3.77 11.69-11.66 21.62-22.2 27.93 10.01-1.18 19.79-3.86 29-7.95-6.78 10.16-15.32 19.01-25.2 26.16z"/></svg> Thread</a>
             <span class="publication">ICLR 2026</span>
         </div>
     </header>
@@ -149,8 +159,8 @@
     </figure>
 
     <section id="abstract">
-        <h2>Abstract</h2>
-        <p style="font-style: italic;"><strong>TLDR.</strong> Tether performs autonomous real-world functional play involving structured, task-directed interactions. We introduce a policy that performs trajectory warping anchored by keypoint correspondences, which is extremely data efficient and robust to significant spatial and semantic environment variation. Running the policy within a VLM-guided multi-task loop, we generate a stream of play data that consistently improves downstream policy learning over time.</p>
+        <h2>Abstract <span class="section-rule"></span></h2>
+        <p><strong>TLDR.</strong> Tether performs autonomous real-world functional play involving structured, task-directed interactions. We introduce a policy that performs trajectory warping anchored by keypoint correspondences, which is extremely data efficient and robust to significant spatial and semantic environment variation. Running the policy within a VLM-guided multi-task loop, we generate a stream of play data that consistently improves downstream policy learning over time.</p>
     <input type="checkbox" id="abstract-toggle" class="toggle-checkbox">
     <label for="abstract-toggle" class="toggle-label"></label>
     <div class="abstract-content">
@@ -159,7 +169,7 @@
     </section>
 
     <section id="method">
-        <h2>Method</h2>
+        <h2>Method <span class="section-rule"></span></h2>
         <figure>
             <video loop muted playsinline preload="none">
                 <source data-src="assets/method_inference.mp4" type="video/mp4">
@@ -175,7 +185,7 @@
     </section>
 
     <section id="imitation">
-        <h2>Robust Imitation</h2>
+        <h2>Robust Imitation <span class="section-rule"></span></h2>
 
         <figure>
             <div class="grid">
@@ -227,7 +237,7 @@
     </section>
 
     <section id="play">
-        <h2>Autonomous Play</h2>
+        <h2>Autonomous Play <span class="section-rule"></span></h2>
 
         <figure>
             <video id="timelapse" loop muted playsinline controls preload="none" poster="assets/timelapse_poster.jpg">
@@ -347,7 +357,11 @@
     </section>
 
     <section id="citation" class="bibtex">
-        <h2>Citation</h2>
+        <h2>Citation <span class="section-rule"></span></h2>
+        <div class="code-wrapper">
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('code').textContent.trim()).then(()=>{this.classList.add('copied');setTimeout(()=>this.classList.remove('copied'),600)})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
         <code>
 @misc{liang2026tether,
       title={Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping}, 
@@ -359,6 +373,7 @@
       url={https://arxiv.org/abs/2603.03278}, 
 }
         </code>
+        </div>
     </section>
 
     <footer>
