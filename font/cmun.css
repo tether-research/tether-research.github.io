@@ -2,7 +2,7 @@
 
 @font-face {
 	font-family: 'Computer Modern Serif';
-    src: url('cmunrm.woff2') format('woff2'), url('cmunrm.woff') format('woff');
+    src: url('cmun/cmunrm.woff2') format('woff2'), url('cmun/cmunrm.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
 	font-family: 'Computer Modern Serif';
-    src: url('cmunbx.woff2') format('woff2'), url('cmunbx.woff') format('woff');
+    src: url('cmun/cmunbx.woff2') format('woff2'), url('cmun/cmunbx.woff') format('woff');
 	font-weight: bold;
 	font-style: normal;
 	font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
 	font-family: 'Computer Modern Serif';
-    src: url('cmunsl.woff2') format('woff2'), url('cmunsl.woff') format('woff');
+    src: url('cmun/cmunsl.woff2') format('woff2'), url('cmun/cmunsl.woff') format('woff');
 	font-weight: normal;
 	font-style: italic;
 	font-display: swap;
@@ -26,7 +26,7 @@
 
 @font-face {
 	font-family: 'Computer Modern Serif';
-    src: url('cmunbl.woff2') format('woff2'), url('cmunbl.woff') format('woff');
+    src: url('cmun/cmunbl.woff2') format('woff2'), url('cmun/cmunbl.woff') format('woff');
 	font-weight: bold;
 	font-style: italic;
 	font-display: swap;
@@ -34,7 +34,7 @@
 
 @font-face {
   font-family: "CMU Typewriter";
-  src: url("cmuntt.woff2") format("woff2"), url("cmuntt.woff") format("woff");
+  src: url("cmun/cmuntt.woff2") format("woff2"), url("cmun/cmuntt.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
