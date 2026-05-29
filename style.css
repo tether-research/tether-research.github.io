@@ -185,6 +185,7 @@ h3 {
 
 p {
     margin: 8px 0px 8px 0px;
+    line-height: 1.4;
 }
 
 figure {
@@ -194,6 +195,7 @@ figure {
 figure figcaption {
     text-align: center;
     margin: 24px 32px 48px 32px;
+    line-height: 1.4;
 }
 
 ul {
