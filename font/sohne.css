@@ -1,0 +1,41 @@
+/* Söhne — only the weights this site actually renders are shipped:
+   - 300 (normal): the body default (style.css `body { font-weight: 300 }`)
+   - 300 italic: <em>, .authors, and other italic body text (inherit weight 300)
+   - 400 (normal): strong/b, pinned to 400 in style.css
+   The page has no bold-italic and nothing at 500, so the 400-italic and both
+   Kräftig faces are not shipped. Foundry weight names: Leicht = 300, Buch = 400,
+   Kräftig = 500. woff2 only — supported by all current browsers. */
+
+/* The mono face is a separate family: only the citation <code> block uses it,
+   and only at 400 (Söhne Mono ships Buch/Halbfett; Halbfett isn't used here). */
+@font-face {
+    font-family: 'Sohne Mono';
+    src: url('sohne/SohneMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne';
+    src: url('sohne/Sohne-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne';
+    src: url('sohne/Sohne-LightItalic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Sohne';
+    src: url('sohne/Sohne-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

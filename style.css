@@ -1,13 +1,13 @@
-
 :root {
     --gray: #333;
     --light-gray: #888;
     --lighter-gray: #ccc;
     --lightest-gray: #eee;
     --lightestest-gray: #f8f8f8;
+    --video-placeholder: #f1f1f1;   /* gray shown behind a video until its first frame paints */
 }
 
-body, h1, h2, h3, ul, li, p {
+body, h1, h2, ul, li, p {
     margin: 0;
     padding: 0;
 }
@@ -17,33 +17,43 @@ html {
 }
 
 body {
-    font-family: 'TWK Lausanne', sans-serif;
-    font-weight: 200;
+    font-family: 'Sohne', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.6;
     color: var(--gray);
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 720px;
     padding: 24px;
 }
 
 strong, b {
-    font-weight: 500;
+    font-weight: 400;
 }
 
 section {
-    margin: 24px 0px;
+    margin: 64px 0px 24px 0px;
     scroll-margin-top: 32px;
 }
 
-header {
-    margin: 24px 0px 40px 0px;
+/* The first section opens with the trailer rather than a heading; the gap above
+   it is the header's own bottom margin, not the inter-section 64px. */
+#abstract {
+    margin-top: 0px;
 }
 
-h1, h2, h3 {
+header {
+    margin: 48px 0px;
+    text-align: center;
+}
+
+h1, h2 {
     font-family: 'Computer Modern Serif', serif;
+    line-height: 1.2;
 }
 
 h1 {
-    margin: 0px 0px 8px 0px;
+    margin: 0px 0px 16px 0px;
 }
 
 
@@ -59,8 +69,8 @@ body.ready a {
 }
 
 a:hover {
-    color: blue;
-    text-decoration-color: blue;
+    color: var(--light-gray);
+    text-decoration-color: var(--light-gray);
 }
 
 .name {
@@ -72,18 +82,18 @@ a:hover {
 
 .title {
     display: block;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: normal;
 }
 
 .authors {
-    font-style: italic;
     color: var(--light-gray);
 }
 
 .authors a {
     text-decoration: none;
     color: var(--light-gray);
+    margin: 0px 6px;
 }
 
 .authors a:hover {
@@ -92,58 +102,72 @@ a:hover {
 
 .affiliations {
     color: var(--light-gray);
-    margin: 0px;
-    display: flex;
-    align-items: flex-start;
-    gap: 32px;
+    margin: 8px 0px 24px 0px;
 }
 
-.affiliations img {
-    display: inline-block;
-    vertical-align: middle;
-    height: 2rem;
-    width: 2rem;
-    transform: none !important;
+/* Each numbered affiliation is its own <span> so the row can be spaced without
+   punctuation, matching the gap the author links carry. */
+.affiliations span {
+    margin: 0px 6px;
 }
 
-.affiliations picture {
-    display: inline-block;
-    vertical-align: middle;
-    height: 2rem;
-    width: 2rem;
-}
+/* Do as I Do overrides `sup` wholesale -- baseline, 1.2rem -- because its only
+   superscript is `*`, a glyph drawn high in its em box, so baseline alignment
+   lands it where a superscript belongs. The affiliation digits here would read as
+   full-size numerals dropped into the author line under that rule, so they are
+   left at the UA's own superscript placement; only the equal-advising dagger,
+   being a mark rather than a number, takes Do as I Do's treatment verbatim.
+   line-height: 0 keeps the enlarged glyph from opening up the line's leading.
 
-.publication {
-    color: var(--light-gray);
-    margin-left: 8px;
-}
-
-.publication::after {
-    content: " 🇧🇷";
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-}
-
-.publication:hover::after {
-    opacity: 1;
-}
-
-sup {
-    color: var(--lighter-gray);
+   Neither kind carries a color of its own. Both inherit light gray anyway --
+   from `.authors a` and from `.affiliations` -- and inheriting is what lets a
+   superscript darken along with its author's name under `.authors a:hover`, as
+   it does on Do as I Do. Pinning `sup` to --light-gray here would look identical
+   at rest but freeze the superscripts out of that hover. */
+sup.mark {
+    vertical-align: baseline;
+    font-size: 1.2rem;
+    line-height: 0;
 }
 
 .buttons {
     margin: 16px 0px 0px 0px;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+/* Vertical centring of every pill label (.button and the .selector-arrow
+   family -- here just the citation copy button). Söhne's ascent (1.04em)
+   dwarfs its descent (0.23em), so a line box's centre sits ~0.7px above the
+   caps' optical centre -- align-items centres the box, and the glyphs then read
+   slightly low against the icon. line-height: 1 drops the leading; min-height
+   is the icon height, without which a text-only pill would sit ~4px shorter
+   than its iconed neighbours in the same row. */
+.button,
+.selector-arrow {
+    line-height: 1;
+    min-height: 16px;
+}
+
+/* The actual centring fix, and it has to live on the label itself: text-box-trim
+   acts on a block container's own line boxes, and it isn't inherited, so on the
+   flex container above it would never reach the text. Every label is a <span>
+   (i.e. a blockified flex item) so the trim applies there, cutting the box down
+   to the cap-height/baseline span -- centring that box centres the letters.
+   Chrome/Safari only; Firefox has no text-box support and keeps the ~0.7px
+   offset, which is why the sizing above doesn't depend on the trim. */
+.button span,
+.selector-arrow span {
+    text-box: trim-both cap alphabetic;
 }
 
 .button {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     padding: 8px 16px;
     background-color: var(--lightest-gray);
     color: var(--light-gray);
@@ -163,10 +187,10 @@ body.ready .button {
 }
 
 h2 {
-    font-size: 1.7em;
+    font-size: 1.5rem;
     font-weight: normal;
     color: var(--gray);
-    margin: 48px 0px 8px 0px;
+    margin: 0px 0px 16px 0px;
     display: flex;
     align-items: baseline;
     gap: 8px;
@@ -174,18 +198,24 @@ h2 {
 
 .section-rule {
     flex: 1;
-    border-top: 2px solid var(--lightest-gray);
-}
-
-h3 {
-    font-size: 1.25em;
-    color: var(--gray);
-    margin: 8px 0px 8px 0px;
+    border-top: 1px solid var(--lighter-gray);
 }
 
 p {
     margin: 8px 0px 8px 0px;
-    line-height: 1.4;
+}
+
+/* Justify the body copy -- here, the abstract. Scoped to a section's own direct <p> children so it can't
+   reach the centred text that also lives in <p>: .authors and the affiliations
+   line are in <header>, not a section, so they're out of range structurally.
+   Captions are <figcaption> and stay centred by design.
+
+   No hyphenation: words stay whole, so justification is absorbed entirely by
+   word-spacing. Deliberate -- `hyphens: auto` would pack the lines more evenly
+   but breaks words across lines, which we don't want here. */
+section > p {
+    text-align: justify;
+    text-wrap: pretty;
 }
 
 figure {
@@ -194,8 +224,13 @@ figure {
 
 figure figcaption {
     text-align: center;
-    margin: 24px 32px 48px 32px;
-    line-height: 1.4;
+    margin: 24px 32px 64px 32px;
+    text-wrap: pretty;
+}
+
+/* Parenthetical position/color references in captions, e.g. "(red)", "(left)". */
+.ref {
+    color: var(--light-gray);
 }
 
 ul {
@@ -218,81 +253,234 @@ img, video {
     margin-left: auto;
     margin-right: auto;
     width: 95%;
-    object-fit: cover;
-    object-position: 50% 20%;
+    height: auto;
     box-sizing: border-box;
     border-radius: 4px;
 }
 
+/* Every video gets the gray placeholder; it shows wherever a frame hasn't
+   painted yet (lazy clip not loaded, or letterbox bars). The box is sized before
+   load by either the cell's aspect-ratio (gallery clips) or the element's
+   width/height attributes (free-flowing clips), so the gray fills the right
+   shape regardless of the clip's ratio.
+
+   Scoped to <video>, unlike Do as I Do which sets it on the shared img/video
+   rule -- that page has no bare <img>, whereas the result plots here are
+   transparent SVGs, and a gray box behind them reads as a mis-rendered chart. */
+video {
+    background-color: var(--video-placeholder);
+}
+
+/* First frame painted: clear the gray so the page background shows through any
+   letterbox bars. video-autoplay.js adds .loaded on `loadeddata`. */
+video.loaded {
+    background-color: transparent;
+}
+
 body.ready img, body.ready video {
-    transition: transform 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
 
-img:hover, video:hover {
-    transform: scale(1.02);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2px;
-}
-
-.grid-9 {
-  grid-template-columns: repeat(9, 1fr);
-}
-
-.grid:not(.grid-9) > .grid-cell:first-child video { border-top-left-radius: 5px; }
-.grid:not(.grid-9) > .grid-cell:nth-child(4) video { border-top-right-radius: 5px; }
-.grid:not(.grid-9) > .grid-cell:nth-last-child(4) video { border-bottom-left-radius: 5px; }
-.grid:not(.grid-9) > .grid-cell:last-child video { border-bottom-right-radius: 5px; }
-
-.grid-9 > .grid-cell:first-child video { border-top-left-radius: 5px; }
-.grid-9 > .grid-cell:nth-child(9) video { border-top-right-radius: 5px; }
-.grid-9 > .grid-cell:nth-last-child(9) video { border-bottom-left-radius: 5px; }
-.grid-9 > .grid-cell:last-child video { border-bottom-right-radius: 5px; }
-
-.grid video {
-    width: 100%;
-    border-radius: 0;
-    pointer-events: none;
-}
-
-body.ready .grid video {
-    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-}
-
-.grid-cell {
-    overflow: visible;
-    position: relative;
-}
-
-.grid-cell:hover {
-    z-index: 1;
-}
-
-.grid-cell:hover video {
-    transform: scale(1.3);
-    border-radius: calc(4px / 1.3);
-}
-
-.grid-9 .grid-cell:hover video {
-    transform: scale(2);
-    border-radius: calc(4px / 2);
-}
-
-.grid:hover .grid-cell:not(:hover) video {
+/* Hovering a gallery clip dims its neighbours so the hovered one stands out.
+   :not(:hover) exempts the clip under the cursor, which keeps the two rules off
+   each other's specificity. */
+.gallery:has(video:hover) video:not(:hover) {
     opacity: 0.5;
+}
+
+/* A clip enlarged by a click is lifted into .clip-zoom under <body>, so it is no
+   longer inside .gallery and the rule above can't see it. Match it separately so
+   hovering the enlarged clip dims the grid behind it the same way. */
+body:has(.clip-zoom video:hover) .gallery video {
+    opacity: 0.5;
+}
+
+/* Click-to-enlarge wrapper. The click handler in clip-zoom.js lifts the clicked
+   clip out into this wrapper under <body>, so it escapes the grid's `contain:
+   paint` box and can overlap the rest of the page rather than being clipped at
+   the gallery edge. `absolute` (top/left set inline, with the scroll offset)
+   anchors it to the document, so it scrolls with the page; `.is-zoomed` scales it
+   up from its centre.
+
+   The rounding lives here, on the wrapper, not on the <video>: once the clip is
+   scaled it gets its own GPU compositing layer, on which border-radius (or even
+   clip-path) on a <video> clips unreliably -- corners drop out or come back
+   asymmetric. A plain block clipping a non-transformed child (overflow:hidden +
+   border-radius) is solid, so the rounding stays uniform on every clip. */
+.clip-zoom {
+    position: absolute;
+    z-index: 900;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 4px;
+    transform-origin: center;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* Scale factor comes from the originating grid's --zoom (copied onto the wrapper
+   by clip-zoom.js, since the wrapper is no longer inside it); 2 is Do as I Do's
+   value and the default here. */
+.clip-zoom.is-zoomed {
+    transform: scale(var(--zoom, 2));
+}
+
+/* The clip fills the wrapper, drops its own rounding (the wrapper clips), and
+   drops the gray placeholder -- an expanded clip is always loaded and playing, so
+   it never needs it, and a transparent box avoids a gray sliver bleeding through
+   the wrapper's antialiased rounded edge. */
+.clip-zoom video {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+/* Same-size filler that holds an expanded clip's grid slot so lifting it out
+   doesn't reflow the page. Matches the video cell's footprint, renders nothing. */
+.gallery-pad {
+    aspect-ratio: 16 / 9;
+}
+
+
+/* Custom hover controls for the watchable videos (the trailer, the timelapse
+   and the correction clip). The <video> is wrapped in .video-player (see
+   js/video-controls.js), which inherits the centered 95% width the bare video
+   had; an absolutely-positioned control bar overlays the bottom edge --
+   play/pause in the corner, a scrub timeline filling the rest -- and fades in
+   on hover. */
+.video-player {
+    position: relative;
+    display: block;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
+    overflow: hidden;                 /* clip the control bar's corners to the radius */
+    background-color: var(--video-placeholder);
+}
+
+.video-player:has(video.loaded) {
+    background-color: transparent;
+}
+
+.video-player video {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    cursor: pointer;                  /* clicking the frame toggles play/pause */
+}
+
+
+/* A compact pill floating near the bottom edge -- only as wide as its contents,
+   centered horizontally. Dark + translucent so the white controls read over any
+   frame. */
+.vc-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 4px;
+    /* Hidden state sits a few px lower; on reveal it slides up to translateY(0)
+       while fading in. */
+    transform: translateX(-50%) translateY(8px);
+    width: 80%;                       /* scales with the video; timeline fills the rest */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    pointer-events: none;             /* let clicks pass through to the frame while hidden */
+}
+
+.video-player:hover .vc-controls,
+.video-player.vc-scrubbing .vc-controls {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.vc-play {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: #fff;                      /* play/pause: white */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease-in-out;
+}
+
+.vc-play:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.vc-play svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: currentColor;
+}
+
+.vc-play .vc-icon-pause { display: none; }
+.vc-play.is-playing .vc-icon-play { display: none; }
+.vc-play.is-playing .vc-icon-pause { display: block; }
+
+.vc-timeline {
+    flex: 1 1 auto;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.3);  /* unplayed: white, transparent */
+    cursor: pointer;
+    position: relative;
+    touch-action: none;                /* let pointer-drag scrub instead of scroll */
+}
+
+.vc-progress {
+    height: 100%;
+    width: 0;
+    border-radius: 4px;
+    background: #fff;                   /* played: white */
+}
+
+/* Gallery: a grid of result clips. The videos behave like every other video on
+   the page (the generic img/video rules give them their radius); only the grid
+   layout and full-cell width live here. */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    /* `layout` makes the grid's internal layout independent of the rest of the
+       document, so a reflow outside it doesn't descend into its cells; `paint`
+       lets the browser skip painting whatever is scrolled off-screen. Not `size`:
+       that would collapse the grid, and the page needs its real height. */
+    contain: layout paint;
+}
+
+.gallery video {
+    width: 100%;
+    cursor: pointer;                 /* click to enlarge in place (clip-zoom.js) */
+    aspect-ratio: 16 / 9;            /* every clip is 480x270 -- reserve the cell size
+                                        before load so the gray placeholder (from the
+                                        generic video rule) and the grid rows are
+                                        correct while unloaded */
 }
 
 .toc {
     position: fixed;
     top: 320px;
-    left: calc((100vw - 960px) / 2 + 960px + 40px);
+    left: calc((100vw - 720px) / 2 + 720px + 64px);
     display: flex;
     flex-direction: column;
     gap: 0px;
-    font-size: 1.0em;
+    font-size: 0.95rem;
     text-align: left;
 }
 
@@ -300,8 +488,6 @@ body.ready .grid video {
     color: var(--light-gray);
     text-decoration: none;
     white-space: nowrap;
-    padding: 4px 0px 4px 16px;
-    border-left: 2px solid var(--lightest-gray);
 }
 
 .toc a:hover {
@@ -310,10 +496,17 @@ body.ready .grid video {
 
 .toc a.active {
     color: var(--gray);
-    border-left-color: var(--lighter-gray);
 }
 
-@media (max-width: 1300px) {
+/* Hide the TOC once it no longer clears the right edge. Its left edge sits at
+   vw/2 + 424px  ((vw - 720)/2 + 720 + 64, i.e. 64px right of the content column),
+   and it is as wide as its widest label -- "Robust Imitation", ~110px in Söhne
+   Light at 0.95rem, so it clears the viewport edge from vw >= 1068px. The cutoff
+   below is set higher than that on purpose, matching the ~60px of headroom Do as
+   I Do leaves over its own floor: below it the column drifts close enough to the
+   edge to look cramped rather than deliberate. Recompute the 1068px floor if the
+   64px offset, the column width, the font size, or the labels change. */
+@media (max-width: 1120px) {
     .toc {
         display: none;
     }
@@ -323,80 +516,73 @@ code {
     display: block;
     white-space: pre-wrap;
     word-break: break-word;
-    font-family: "CMU Typewriter", monospace;
-    padding: 0px 32px 0px 32px;
+    font-family: 'Sohne Mono', monospace;
+    font-weight: 400;
+    font-size: 0.8rem;
+    padding: 16px;
     background-color: var(--lightestest-gray);
     border-radius: 4px;
 }
 
 .code-wrapper {
-    position: relative;
+    margin-bottom: 64px;
 }
 
-.copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 8px;
-    background-color: var(--lightest-gray);
-    color: var(--light-gray);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+/* Sits at the right end under the code block, 8px below it. Everything else --
+   padding, radius, colours, icon gap, hover -- comes from .selector-arrow;
+   display:flex + a fit-content width is what lets the auto left margin push it
+   right (the pill is inline-flex, and auto margins don't move an inline box).
+   The selector is doubled up: .copy-btn alone ties .selector-arrow on
+   specificity and loses on source order, so display:flex would never take. */
+.selector-arrow.copy-btn {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    width: fit-content;
+    margin: 8px 0px 0px auto;
 }
 
-.copy-btn:hover {
-    background-color: var(--lighter-gray);
-    color: white;
-}
-
-.copy-btn.copied {
+/* Copy confirmation: the button holds the dark hover colours for a beat after a
+   successful write, so the click reads as having done something. */
+.selector-arrow.copy-btn.copied {
     background-color: var(--gray);
     color: white;
 }
 
-.toggle-checkbox {
-    display: none;
-}
-
-.abstract-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease, opacity 0.2s ease;
-    opacity: 0;
+/* Pill button (icon + label) matching the .button family -- gray bg, dark hover
+   -- so the two read as one family. */
+.selector-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 100px;
+    background-color: var(--lightest-gray);
     color: var(--light-gray);
-}
-
-.toggle-checkbox:checked ~ .abstract-content {
-    max-height: 600px;
-    opacity: 1;
-}
-
-.toggle-label {
+    font-family: inherit;
+    font-weight: 300;
+    font-size: 1rem;
     cursor: pointer;
     user-select: none;
-    font-size: 1.0em;
-    font-style: italic;
-    color: var(--light-gray);
-    transition: border-color 0.2s ease;
+    -webkit-user-select: none;
 }
 
-body.ready .toggle-label {
-    transition: color 0.2s ease-in-out;
+.selector-arrow svg {
+    width: 16px;
+    height: 16px;
+    display: block;
 }
 
-.toggle-label:hover {
-    color: var(--gray)
+.selector-arrow:hover {
+    background-color: var(--gray);
+    color: white;
 }
 
-.toggle-label::after {
-    content: "Read more";
+.selector-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
 }
 
-.toggle-checkbox:checked + .toggle-label::after {
-    content: "Read less";
+body.ready .selector-arrow {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
