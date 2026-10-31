@@ -1,0 +1,11 @@
+/* Downloaded and adapted from https://checkmyworking.com/cm-web-fonts/
+   Only the regular face ships: h1/h2 are its only users and both render at
+   font-weight: normal with no italic or <strong> inside them. */
+
+@font-face {
+	font-family: 'Computer Modern Serif';
+    src: url('cmun/cmunrm.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}

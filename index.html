@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Autonomous Functional Play with Correspondence-Driven Trajectory Warping." />
+    <meta name="google-site-verification" content="dZSf4hntGL1qJroni7eHgXuFQ4uxGGy7ZMVKqKyWY78" />
+
+    <meta property="og:title" content="Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping" />
+    <meta property="og:description" content="Autonomous real-world play with robust correspondence-based trajectory warping generates high-quality data for effective downstream policy learning." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tether-research.github.io/" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping" />
+    <meta name="twitter:description" content="Autonomous real-world play with robust correspondence-based trajectory warping generates high-quality data for effective downstream policy learning." />
+
+    <title>Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping</title>
+
+    <link rel="icon" type="image/png" href="assets/penn.png">
+
+    <link rel="preload" href="font/cmun/cmunrm.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="font/sohne/Sohne-Light.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="font/cmun.css">
+    <link rel="stylesheet" href="font/sohne.css">
+
+    <!-- Icons: Lucide (https://lucide.dev), ISC licensed -- copy, play, pause,
+         drawn inline at their stock 24x24 geometry and stroke-width 2. The
+         arXiv, GitHub, and X marks are each project's own brand asset, not
+         Lucide. -->
+    <base target="_blank">
+    <script type="module" src="js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js" async
+        onload="if(document.readyState!=='loading')initHls()"></script>
+    <script>
+        // HLS streaming for the trailer and timelapse -- init as soon as DOM +
+        // hls.js are both ready, which is well before the `load` event js/main.js
+        // waits on. Everything else (TOC, autoplay, video controls) lives there.
+        function initHls() {
+            [['trailer', 'assets/trailer_hls/stream.m3u8'],
+             ['timelapse', 'assets/timelapse_hls/stream.m3u8']].forEach(([id, src]) => {
+                const el = document.getElementById(id);
+                if (!el || el.dataset.hls) return;
+                if (el.canPlayType('application/vnd.apple.mpegurl')) {
+                    el.src = src;
+                    el.dataset.hls = '';
+                } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(src);
+                    hls.attachMedia(el);
+                    el.dataset.hls = '';
+                }
+            });
+        }
+        if (document.readyState !== 'loading') initHls();
+        else document.addEventListener('DOMContentLoaded', initHls);
+    </script>
+</head>
+
+<body>
+    <nav class="toc">
+        <a href="#abstract" target="_self">Abstract</a>
+        <a href="#method" target="_self">Method</a>
+        <a href="#imitation" target="_self">Robust Imitation</a>
+        <a href="#play" target="_self">Autonomous Play</a>
+    </nav>
+
+    <header>
+        <h1>
+            <span class="name">Tether</span>
+            <span class="title">Autonomous Functional Play with<br>Correspondence-Driven Trajectory Warping</span>
+        </h1>
+
+        <p class="authors">
+            <a href="https://willjhliang.github.io">William Liang<sup>1,2</sup></a>
+            <a href="https://www.linkedin.com/in/sam-wang-penn/">Sam Wang<sup>1</sup></a>
+            <a href="https://johnny-wang16.github.io/">Hung-Ju Wang<sup>1,3</sup></a>
+            <br>
+            <a href="https://obastani.github.io/">Osbert Bastani<sup>1</sup></a>
+            <a href="https://jasonma2016.github.io/">Yecheng Jason Ma<sup>1,3</sup><sup class="mark" title="Denotes equal advising">&dagger;</sup></a>
+            <a href="https://www.seas.upenn.edu/~dineshj/">Dinesh Jayaraman<sup>1</sup><sup class="mark" title="Denotes equal advising">&dagger;</sup></a>
+        </p>
+
+        <div class="affiliations">
+            <p>
+                <span><sup>1</sup>University of Pennsylvania</span>
+                <span><sup>2</sup>University of California, Berkeley</span>
+                <span><sup>3</sup>Dyna Robotics</span>
+            </p>
+        </div>
+
+        <div class="buttons">
+            <a class="button" href="https://arxiv.org/abs/2603.03278"><svg width="12" height="16" viewBox="0 0 17.732 24.269"><path d="M573.549,280.916l2.266,2.738,6.674-7.84c.353-.47.52-.717.353-1.117a1.218,1.218,0,0,0-1.061-.748h0a.953.953,0,0,0-.712.262Z" transform="translate(-566.984 -271.548)" fill="currentColor" opacity="0.5"/><path d="M579.525,282.225l-10.606-10.174a1.413,1.413,0,0,0-.834-.5,1.09,1.09,0,0,0-1.027.66c-.167.4-.047.681.319,1.206l8.44,10.242h0l-6.282,7.716a1.336,1.336,0,0,0-.323,1.3,1.114,1.114,0,0,0,1.04.69A.992.992,0,0,0,571,293l8.519-7.92A1.924,1.924,0,0,0,579.525,282.225Z" transform="translate(-566.984 -271.548)" fill="currentColor"/><path d="M584.32,293.912l-8.525-10.275,0,0L573.53,280.9l-1.389,1.254a2.063,2.063,0,0,0,0,2.965l10.812,10.419a.925.925,0,0,0,.742.282,1.039,1.039,0,0,0,.953-.667A1.261,1.261,0,0,0,584.32,293.912Z" transform="translate(-566.984 -271.548)" fill="currentColor" opacity="0.5"/></svg><span>Paper</span></a>
+            <a class="button" href="https://github.com/tether-research/tether"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span>Code</span></a>
+            <a class="button" href="https://x.com/willjhliang/status/2029238456766087386"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>Thread</span></a>
+        </div>
+    </header>
+
+    <section id="abstract">
+        <figure>
+            <video id="trailer" data-controls width="1920" height="1080" loop muted playsinline preload="none" poster="assets/trailer_poster.jpg">
+                <source src="assets/trailer.mp4" type="video/mp4">
+            </video>
+        </figure>
+
+        <p>The ability to conduct and learn from interaction and experience is a central challenge in robotics, offering a scalable alternative to labor-intensive human demonstrations. However, realizing such "play" requires (1) a policy robust to diverse, potentially out-of-distribution environment states, and (2) a procedure that continuously produces useful robot experience.</p>
+
+        <p>To address these challenges, we introduce Tether, a method for autonomous functional play involving structured, task-directed interactions. First, we design a novel open-loop policy that warps actions from a small set of source demonstrations by anchoring them to semantic keypoint correspondences in the target scene. We show that this design is extremely data-efficient and robust even under significant spatial and semantic variations. Second, we deploy this policy for autonomous functional play in the real world via a continuous cycle of task selection, execution, evaluation, and improvement, guided by the visual understanding capabilities of vision-language models. This procedure generates diverse, high-quality datasets with minimal human intervention.</p>
+
+        <p>In a household-like multi-object setup, our method is the first to perform many hours of autonomous multi-task play in the real world starting from only a handful of demonstrations. This produces a stream of data that consistently improves the performance of closed-loop imitation policies over time, ultimately yielding over 1000 expert-level trajectories and training policies competitive with those learned from human-collected demonstrations.</p>
+    </section>
+
+    <section id="method">
+        <h2>Method <span class="section-rule"></span></h2>
+        <figure>
+            <video width="1920" height="576" loop muted playsinline preload="none">
+                <source data-src="assets/method_inference.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Correspondence-Driven Trajectory Warping.</strong> Given a few demos, our policy computes keypoint correspondences and produces a warped trajectory action plan, which is executed open-loop.</figcaption>
+        </figure>
+        <figure>
+            <video width="1920" height="464" loop muted playsinline preload="none">
+                <source data-src="assets/method_play.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Autonomous Multi-Task Play with Vision-Language Models.</strong> Our play procedure continuously runs the Tether policy, cycling across different tasks and querying a VLM for plan generation and success detection.</figcaption>
+        </figure>
+    </section>
+
+    <section id="imitation">
+        <h2>Robust Imitation <span class="section-rule"></span></h2>
+
+        <figure>
+            <div class="gallery">
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_shelf_table.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_table_bowl.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/bowl_table_shelf.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/bowl_shelf_table.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/apple_bowl.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/strawberry_bowl.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_basket.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/pineapple_cup.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/wipe_whiteboard.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/open_cabinet.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/hang_tape.mp4" type="video/mp4">
+                </video>
+                <video loop muted playsinline preload="none">
+                    <source data-src="assets/insert_coffee.mp4" type="video/mp4">
+                </video>
+            </div>
+            <figcaption><strong>Tasks.</strong> Our Tether policy is robust to spatial and semantic environment variation, as evaluated on in-distribution <span class="ref">(first row)</span> and out-of-distribution <span class="ref">(second row)</span> objects, as well as challenging manipulation skills <span class="ref">(third row)</span>.</figcaption>
+        </figure>
+
+        <figure>
+            <img src="assets/experiment_policy.svg" loading="lazy" width="938" height="574">
+            <figcaption><strong>Main Policy Comparison.</strong> Our Tether policy surpasses imitation learning baselines in the low data regime.</figcaption>
+        </figure>
+
+    </section>
+
+    <section id="play">
+        <h2>Autonomous Play <span class="section-rule"></span></h2>
+
+        <figure>
+            <video id="timelapse" data-controls width="800" height="450" loop muted playsinline preload="none" poster="assets/timelapse_poster.jpg">
+                <source src="assets/timelapse.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Timelapse.</strong> Tether performs over 24 hours of autonomous real-world play with minimal human intervention. We record a subsection of its run, played at 100x speed.</figcaption>
+        </figure>
+
+        <figure>
+            <picture><source srcset="assets/experiment_play.webp" type="image/webp"><img src="assets/experiment_play.jpg" loading="lazy"></picture>
+            <figcaption><strong>Autonomous Play Statistics.</strong> In 26 hours of play, Tether produces over 1000 trajectories across 6 tasks <span class="ref">(left)</span> and significantly expands data diversity, visualized as heatmaps of object poses at the beginning and end of play <span class="ref">(right)</span>.</figcaption>
+        </figure>
+
+        <figure>
+            <!-- One precomposited 9x9 mosaic rather than 81 separate clips: browsers
+                 hand out only a handful of hardware decoders, and the whole wall fits
+                 in a viewport, so 81 streams would decode at once. Built by
+                 scripts/build-mosaic.sh from scripts/trajectory_clips.txt, which is the
+                 source of truth for clip order (row-major: cell (gx,gy) is line gy*9+gx). -->
+            <video width="2304" height="1296" loop muted playsinline preload="none">
+                <source data-src="assets/trajectories/mosaic.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Generated Trajectories.</strong> Tether produces expert-level trajectories with randomization and resets induced by play.</figcaption>
+        </figure>
+
+        <figure>
+            <video data-controls width="960" height="540" loop muted playsinline preload="none">
+                <source data-src="assets/correction.mp4" type="video/mp4">
+            </video>
+            <figcaption><strong>Spontaneous Correction.</strong> While a flipped bowl is nearly impossible to fix with one arm and requires intervention, Tether corrects this case by chance, highlighting that at scale, coincidences may result in unexpected behaviors.</figcaption>
+        </figure>
+
+        <figure>
+            <img src="assets/experiment_play_policy.svg" loading="lazy" width="906" height="404">
+            <figcaption><strong>Downstream Policy Learning Results.</strong> Tether's stream of data consistently improves policy performance over time, achieving results competitive with policies trained on an equal number of human-collected demos <span class="ref">(black)</span>.</figcaption>
+        </figure>
+
+        <figure>
+            <img src="assets/policy_evals_play.svg" loading="lazy" width="931" height="202">
+            <figcaption><strong>Comparison on Play Distribution.</strong> Evaluated on the distribution of environment states encountered during play, Tether policy is more robust and outperforms more data-hungry diffusion policies.</figcaption>
+        </figure>
+    </section>
+
+    <section id="citation" class="bibtex">
+        <h2>Citation <span class="section-rule"></span></h2>
+        <div class="code-wrapper">
+            <code>@misc{liang2026tether,
+    title={Tether: Autonomous Functional Play with Correspondence-Driven Trajectory Warping},
+    author={William Liang and Sam Wang and Hung-Ju Wang and Osbert Bastani and Yecheng Jason Ma and Dinesh Jayaraman},
+    year={2026},
+    eprint={2603.03278},
+    archivePrefix={arXiv},
+    primaryClass={cs.RO},
+    url={https://arxiv.org/abs/2603.03278},
+}</code>
+            <button class="button copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('code').textContent.trim()).then(()=>{this.classList.add('copied');setTimeout(()=>this.classList.remove('copied'),600)})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy</span></button>
+        </div>
+    </section>
+
+</body>
+
+</html>
